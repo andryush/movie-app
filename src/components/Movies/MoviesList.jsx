@@ -11,9 +11,9 @@ class MoviesList extends Component {
     };
   }
 
-  getMovies = (filters) => {
+  getMovies = (filters, page) => {
     const {sort_by} = filters;
-    const link = `${API_URL}discover/movie?api_key=${API_KEY_V3}&language=ru-RU&sort_by=${sort_by}`;
+    const link = `${API_URL}discover/movie?api_key=${API_KEY_V3}&language=ru-RU&sort_by=${sort_by}&page=${page}`;
     fetch(link)
       .then((response) => response.json())
       .then((data) => {
@@ -24,12 +24,16 @@ class MoviesList extends Component {
   }
 
   componentDidMount() {
-    this.getMovies(this.props.filters);
+    this.getMovies(this.props.filters, this.props.page);
   }
 
   componentDidUpdate(prevProps) {
       if(this.props.filters !== prevProps.filters) {
-          this.getMovies(this.props.filters);
+          this.getMovies(this.props.filters, this.props.page);
+      }
+
+      if(this.props.page !== prevProps.page) {
+        this.getMovies(this.props.filters, this.props.page)
       }
   }
 
