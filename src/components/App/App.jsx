@@ -22,15 +22,14 @@ class App extends Component {
 
     this.setState({
       filters: newFilters,
-      page: 1
     });
   };
 
   onChangePage = (page) => {
     this.setState({
-      page: page
-    })
-  }
+      page: page,
+    });
+  };
 
   render() {
     const { filters, page } = this.state;
@@ -51,7 +50,11 @@ class App extends Component {
             </div>
           </div>
           <div className="col-8 mt-4">
-            <MoviesList filters={filters} page={page} />
+            <MoviesList
+              filters={filters}
+              page={page}
+              onChangePage={this.onChangePage}
+            />
           </div>
         </div>
       </div>
