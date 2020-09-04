@@ -7,7 +7,7 @@ class ReleaseYear extends Component {
   };
 
   render() {
-    const { years, primary_release_year, onChangeFilters } = this.props;
+    const { years, onChangeFilters } = this.props;
     return (
       <div className="form-group">
         <label htmlFor="primaryReleaseYear">Год релиза:</label>
