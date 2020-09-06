@@ -12,6 +12,7 @@ class App extends Component {
         primary_release_year: null,
       },
       page: 1,
+      total_pages: null,
     };
   }
 
@@ -32,8 +33,14 @@ class App extends Component {
     });
   };
 
+  getTotalPages = (total_pages) => {
+    this.setState({
+      total_pages,
+    });
+  };
+
   render() {
-    const { filters, page } = this.state;
+    const { filters, page, total_pages } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -45,6 +52,7 @@ class App extends Component {
                   onChangeFilters={this.onChangeFilters}
                   filters={filters}
                   page={page}
+                  total_pages={total_pages}
                   onChangePage={this.onChangePage}
                 />
               </div>
@@ -55,6 +63,7 @@ class App extends Component {
               filters={filters}
               page={page}
               onChangePage={this.onChangePage}
+              getTotalPages={this.getTotalPages}
             />
           </div>
         </div>

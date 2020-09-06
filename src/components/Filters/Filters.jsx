@@ -10,6 +10,7 @@ class Filters extends Component {
       onChangePage,
       filters: { sort_by, primary_release_year },
       page,
+      total_pages,
     } = this.props;
 
     return (
@@ -19,7 +20,11 @@ class Filters extends Component {
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
         />
-        <Pagination page={page} onChangePage={onChangePage} />
+        <Pagination
+          page={page}
+          onChangePage={onChangePage}
+          total_pages={total_pages}
+        />
       </form>
     );
   }

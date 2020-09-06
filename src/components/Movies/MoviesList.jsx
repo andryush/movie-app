@@ -8,6 +8,7 @@ class MoviesList extends Component {
     super();
     this.state = {
       movies: [],
+      total_pages: null,
     };
   }
 
@@ -19,8 +20,10 @@ class MoviesList extends Component {
       .then((data) => {
         this.setState({
           movies: data.results,
+          total_pages: data.total_pages,
         });
-      });
+      })
+      .then(() => this.props.getTotalPages(this.state.total_pages));
   };
 
   componentDidMount() {
