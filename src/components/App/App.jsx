@@ -10,6 +10,7 @@ class App extends Component {
       filters: {
         sort_by: "popularity.desc",
         primary_release_year: null,
+        genres: [],
       },
       page: 1,
       total_pages: null,
@@ -39,6 +40,23 @@ class App extends Component {
     });
   };
 
+  getGenres = (genres) => {
+    const newFiltres = { ...this.state.filters, genres: genres };
+    this.setState({
+      filters: newFiltres,
+    });
+  };
+
+  resetFilters = (event) => {
+    this.setState({
+      filters: {
+        sort_by: "popularity.desc",
+        primary_release_year: null,
+        genres: [],
+      },
+    });
+  };
+
   render() {
     const { filters, page, total_pages } = this.state;
     return (
@@ -54,6 +72,8 @@ class App extends Component {
                   page={page}
                   total_pages={total_pages}
                   onChangePage={this.onChangePage}
+                  getGenres={this.getGenres}
+                  resetFilters={this.resetFilters}
                 />
               </div>
             </div>

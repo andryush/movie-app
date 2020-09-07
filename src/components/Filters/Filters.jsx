@@ -2,15 +2,18 @@ import React, { Component } from "react";
 import SortBy from "./SortBy";
 import Pagination from "./Pagination";
 import ReleaseYear from "./ReleaseYear";
+import Genres from "./Genres";
 
 class Filters extends Component {
   render() {
     const {
       onChangeFilters,
       onChangePage,
+      getGenres,
       filters: { sort_by, primary_release_year },
       page,
       total_pages,
+      resetFilters,
     } = this.props;
 
     return (
@@ -20,6 +23,10 @@ class Filters extends Component {
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
         />
+        <Genres getGenres={getGenres} />
+        <button className="btn btn-danger w-100" onClick={resetFilters}>
+          Очистить фильтры
+        </button>
         <Pagination
           page={page}
           onChangePage={onChangePage}

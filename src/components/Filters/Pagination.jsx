@@ -5,7 +5,7 @@ class Pagination extends Component {
     const { page, total_pages, onChangePage } = this.props;
     return (
       <>
-        <div className="btn-group d-flex justify-content-center">
+        <div className="btn-group d-flex justify-content-center mt-3">
           <button
             type="button"
             className="btn btn-light"

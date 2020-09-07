@@ -13,8 +13,15 @@ class MoviesList extends Component {
   }
 
   getMovies = (filters, page) => {
-    const { sort_by, primary_release_year } = filters;
-    const link = `${API_URL}discover/movie?api_key=${API_KEY_V3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}`;
+    const { sort_by, primary_release_year, genres } = filters;
+    let genresQuery = "";
+    if (genres.length > 0) {
+      for (let i = 0; i < genres.length; i++) {
+        genresQuery += genres[i] + "%2C";
+      }
+      genresQuery = genresQuery.slice(0, -3);
+    }
+    const link = `${API_URL}discover/movie?api_key=${API_KEY_V3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${genresQuery}`;
     fetch(link)
       .then((response) => response.json())
       .then((data) => {
