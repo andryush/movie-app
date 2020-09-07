@@ -41,6 +41,7 @@ class Genres extends Component {
     const { genres } = this.state;
     return (
       <div>
+        <label>Жанры:</label>
         {genres.map((genre) => {
           return (
             <div className="form-check" key={genre.id}>
