@@ -6,7 +6,7 @@ import Filters from "../Filters/Filters";
 class App extends Component {
   constructor() {
     super();
-    this.state = {
+    this.initialState = {
       filters: {
         sort_by: "popularity.desc",
         primary_release_year: null,
@@ -15,6 +15,7 @@ class App extends Component {
       page: 1,
       total_pages: null,
     };
+    this.state = this.initialState;
   }
 
   onChangeFilters = (event) => {
@@ -40,21 +41,8 @@ class App extends Component {
     });
   };
 
-  getGenres = (genres) => {
-    const newFiltres = { ...this.state.filters, genres: genres };
-    this.setState({
-      filters: newFiltres,
-    });
-  };
-
   resetFilters = (event) => {
-    this.setState({
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: null,
-        genres: [],
-      },
-    });
+    this.setState(this.initialState);
   };
 
   render() {

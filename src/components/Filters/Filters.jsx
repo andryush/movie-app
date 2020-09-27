@@ -9,8 +9,7 @@ class Filters extends Component {
     const {
       onChangeFilters,
       onChangePage,
-      getGenres,
-      filters: { sort_by, primary_release_year },
+      filters: { sort_by, primary_release_year, genres },
       page,
       total_pages,
       resetFilters,
@@ -23,7 +22,7 @@ class Filters extends Component {
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
         />
-        <Genres getGenres={getGenres} />
+        <Genres onChangeFilters={onChangeFilters} genres={genres} />
         <button className="btn btn-danger w-100" onClick={resetFilters}>
           Очистить фильтры
         </button>

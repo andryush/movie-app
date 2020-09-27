@@ -5,8 +5,7 @@ class Genres extends Component {
   constructor() {
     super();
     this.state = {
-      genres: [],
-      selectedGenres: [],
+      genresList: [],
     };
   }
 
@@ -16,33 +15,37 @@ class Genres extends Component {
       .then((response) => response.json())
       .then((data) => {
         this.setState({
-          genres: data.genres,
+          genresList: data.genres,
         });
       });
   }
 
   onChangeGenre = (event) => {
-    const newSelectedGenres = [...this.state.selectedGenres];
-    const id = parseInt(event.target.id);
-    if (newSelectedGenres.indexOf(id) !== -1) {
-      newSelectedGenres.splice(newSelectedGenres.indexOf(id), 1);
-    } else {
-      newSelectedGenres.push(id);
-    }
-    this.setState(
-      {
-        selectedGenres: newSelectedGenres,
+    // const newSelectedGenres = [...this.props.genres];
+    // if (newSelectedGenres.indexOf(id) !== -1) {
+    //   newSelectedGenres.splice(newSelectedGenres.indexOf(id), 1);
+    // } else {
+    //   newSelectedGenres.push(id);
+    // }
+    const id = Number(event.target.id);
+    const { genres } = this.props;
+    this.props.onChangeFilters({
+      target: {
+        name: "genres",
+        value: genres.includes(id)
+          ? genres.filter((genreId) => genreId !== id)
+          : [...genres, id],
       },
-      () => this.props.getGenres(this.state.selectedGenres)
-    );
+    });
   };
 
   render() {
-    const { genres } = this.state;
+    const { genresList } = this.state;
+    const { genres } = this.props;
     return (
       <div>
         <label>Жанры:</label>
-        {genres.map((genre) => {
+        {genresList.map((genre) => {
           return (
             <div className="form-check" key={genre.id}>
               <input
@@ -51,6 +54,7 @@ class Genres extends Component {
                 name={genre.name}
                 id={genre.id}
                 onChange={this.onChangeGenre}
+                checked={genres.includes(genre.id)}
               />
               <label htmlFor={genre.id}>{genre.name}</label>
             </div>
