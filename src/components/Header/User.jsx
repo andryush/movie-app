@@ -1,4 +1,5 @@
 import React from "react";
+import { AppContext } from "../App/App";
 
 class User extends React.Component {
   render() {
@@ -12,4 +13,10 @@ class User extends React.Component {
     );
   }
 }
-export default User;
+export default (props) => {
+  return (
+    <AppContext.Consumer>
+      {(context) => <User user={context.user} {...props} />}
+    </AppContext.Consumer>
+  );
+};

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API_URL, API_KEY_V3, fetchApi } from "../../../api/api";
+import { AppContext } from "../../App/App";
 
 import "./LoginForm.css";
 
@@ -214,4 +215,16 @@ class LoginForm extends Component {
     );
   }
 }
-export default LoginForm;
+export default (props) => {
+  return (
+    <AppContext.Consumer>
+      {(context) => (
+        <LoginForm
+          updateUser={context.updateUser}
+          updateSessionId={context.updateSessionId}
+          {...props}
+        />
+      )}
+    </AppContext.Consumer>
+  );
+};

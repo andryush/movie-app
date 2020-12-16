@@ -181,8 +181,8 @@ class Login extends Component {
           <ModalHeader toggle={this.toggleModal}>Авторизация</ModalHeader>
           <ModalBody>
             <LoginForm
-              updateUser={this.props.updateUser}
-              updateSessionId={this.props.updateSessionId}
+            // updateUser={this.props.updateUser}
+            // updateSessionId={this.props.updateSessionId}
             />
           </ModalBody>
         </Modal>

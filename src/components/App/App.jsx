@@ -7,6 +7,8 @@ import { API_URL, API_KEY_V3, fetchApi } from "../../api/api";
 
 import Cookies from "universal-cookie";
 
+export const AppContext = React.createContext();
+
 const cookies = new Cookies();
 
 class App extends Component {
@@ -82,41 +84,45 @@ class App extends Component {
   render() {
     const { filters, page, total_pages } = this.state;
     return (
-      <>
-        <Header
-          updateUser={this.updateUser}
-          user={this.state.user}
-          updateSessionId={this.updateSessionId}
-        />
-        <div className="container">
-          <div className="row">
-            <div className="col-4 mt-4">
-              <div className="card" style={{ width: "100%" }}>
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <Filters
-                    onChangeFilters={this.onChangeFilters}
-                    filters={filters}
-                    page={page}
-                    total_pages={total_pages}
-                    onChangePage={this.onChangePage}
-                    getGenres={this.getGenres}
-                    resetFilters={this.resetFilters}
-                  />
+      <AppContext.Provider
+        value={{
+          user: this.state.user,
+          updateUser: this.updateUser,
+          updateSessionId: this.updateSessionId,
+        }}
+      >
+        <>
+          <Header user={this.state.user} />
+          <div className="container">
+            <div className="row">
+              <div className="col-4 mt-4">
+                <div className="card" style={{ width: "100%" }}>
+                  <div className="card-body">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      onChangeFilters={this.onChangeFilters}
+                      filters={filters}
+                      page={page}
+                      total_pages={total_pages}
+                      onChangePage={this.onChangePage}
+                      getGenres={this.getGenres}
+                      resetFilters={this.resetFilters}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-8 mt-4">
-              <MoviesList
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                getTotalPages={this.getTotalPages}
-              />
+              <div className="col-8 mt-4">
+                <MoviesList
+                  filters={filters}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  getTotalPages={this.getTotalPages}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </>
+        </>
+      </AppContext.Provider>
     );
   }
 }

@@ -17,11 +17,11 @@ class Header extends Component {
             Movie App
           </a>
           {this.props.user ? (
-            <User user={this.props.user} />
+            <User />
           ) : (
             <Login
-              updateUser={this.props.updateUser}
-              updateSessionId={this.props.updateSessionId}
+            // updateUser={this.props.updateUser}
+            // updateSessionId={this.props.updateSessionId}
             />
           )}
         </div>
