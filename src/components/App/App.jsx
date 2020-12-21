@@ -8,7 +8,6 @@ import { API_URL, API_KEY_V3, fetchApi } from "../../api/api";
 import Cookies from "universal-cookie";
 
 export const AppContext = React.createContext();
-
 const cookies = new Cookies();
 
 class App extends Component {
@@ -72,9 +71,20 @@ class App extends Component {
     });
   };
 
+  deleteSessionId = () => {
+    cookies.remove("session_id");
+    this.setState({
+      session_id: null,
+      user: null,
+    });
+  };
+
   componentDidMount() {
     const session_id = cookies.get("session_id");
     if (session_id) {
+      this.setState({
+        session_id: session_id,
+      });
       fetchApi(
         `${API_URL}account?api_key=${API_KEY_V3}&session_id=${session_id}`
       ).then((user) => this.updateUser(user));
@@ -87,8 +97,10 @@ class App extends Component {
       <AppContext.Provider
         value={{
           user: this.state.user,
+          session_id: this.state.session_id,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
+          deleteSessionId: this.deleteSessionId,
         }}
       >
         <>

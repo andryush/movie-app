@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Login from "../Header/Login/Login";
-import User from "../Header/User";
+import UserMenu from "../Header/UserMenu";
 
 class Header extends Component {
   render() {
@@ -17,7 +17,7 @@ class Header extends Component {
             Movie App
           </a>
           {this.props.user ? (
-            <User />
+            <UserMenu />
           ) : (
             <Login
             // updateUser={this.props.updateUser}
