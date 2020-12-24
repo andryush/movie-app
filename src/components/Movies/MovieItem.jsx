@@ -1,8 +1,9 @@
 import React from "react";
+import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
 import DefaultPoster from "../../assets/images/poster-not-found.jpg";
 
 function MovieItem(props) {
-  const { vote_average, title, backdrop_path, poster_path } = props.item;
+  const { vote_average, title, backdrop_path, poster_path, id } = props.item;
   const poster =
     (backdrop_path || poster_path) === null
       ? DefaultPoster
@@ -12,7 +13,14 @@ function MovieItem(props) {
       <img className="card-img-top card-img--height" src={poster} alt={title} />
       <div className="card-body">
         <h6 className="card-title">{title}</h6>
-        <div className="card-text">Рейтинг: {vote_average}</div>
+        <div className="d-flex justify-content-between">
+          <div className="card-text flex-grow-1">Рейтинг: {vote_average}</div>
+          {props.isFav ? (
+            <Star onClick={() => props.removeFromFavorites(id)} />
+          ) : (
+            <StarBorder onClick={() => props.addToFavorites(id)} />
+          )}
+        </div>
       </div>
     </div>
   );

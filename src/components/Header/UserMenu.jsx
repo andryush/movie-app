@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
-import "./UserMenu.css";
 // import { AppContext } from "../App/App";
 
 class UserMenu extends React.Component {

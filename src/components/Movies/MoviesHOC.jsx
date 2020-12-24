@@ -1,7 +1,5 @@
 import React from "react";
-// import { API_KEY_V3, API_URL} from "../../api/api";
 import CallApi from "../../api/api";
-// import queryString from "query-string";
 
 export default (Component) =>
   class MoviesHOC extends React.Component {
@@ -14,16 +12,8 @@ export default (Component) =>
 
     getMovies = (filters, page) => {
       const { sort_by, primary_release_year, genres } = filters;
-      // let genresQuery = "";
-      // if (genres.length > 0) {
-      //   for (let i = 0; i < genres.length; i++) {
-      //     genresQuery += genres[i] + "%2C";
-      //   }
-      //   genresQuery = genresQuery.slice(0, -3);
-      // }
-      // const link = `${API_URL}discover/movie?api_key=${API_KEY_V3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${genresQuery}`;
+
       const queryStringParams = {
-        //api_key: API_KEY_V3,
         language: "ru-RU",
         sort_by: sort_by,
         page: page,
@@ -34,10 +24,6 @@ export default (Component) =>
         queryStringParams.with_genres = genres.join(",");
       }
 
-      // const link = `${API_URL}discover/movie?${queryString.stringify(
-      //   queryStringParams
-      // )}`;
-
       CallApi.get("discover/movie", {
         params: queryStringParams,
       }).then((data) => {
@@ -46,15 +32,6 @@ export default (Component) =>
         });
         this.props.getTotalPages(data.total_pages);
       });
-
-      // fetch(link)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     this.setState({
-      //       movies: data.results,
-      //     });
-      //     this.props.getTotalPages(data.total_pages);
-      //   });
     };
 
     componentDidMount() {
@@ -74,6 +51,14 @@ export default (Component) =>
 
     render() {
       const { movies } = this.state;
-      return <Component movies={movies} />;
+      return (
+        <Component
+          movies={movies}
+          addToFavorites={this.props.addToFavorites}
+          removeFromFavorites={this.props.removeFromFavorites}
+          favorites={this.props.favorites}
+          session_id={this.props.session_id}
+        />
+      );
     }
   };
