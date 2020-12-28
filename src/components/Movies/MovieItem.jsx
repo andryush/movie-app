@@ -15,10 +15,15 @@ function MovieItem(props) {
         <h6 className="card-title">{title}</h6>
         <div className="d-flex justify-content-between">
           <div className="card-text flex-grow-1">Рейтинг: {vote_average}</div>
-          {props.isFav ? (
+          {props.isFavorite ? (
             <Star onClick={() => props.removeFromFavorites(id)} />
           ) : (
             <StarBorder onClick={() => props.addToFavorites(id)} />
+          )}
+          {props.isWatchListed ? (
+            <Bookmark onClick={() => props.removeFromWatchList(id)} />
+          ) : (
+            <BookmarkBorder onClick={() => props.addToWatchList(id)} />
           )}
         </div>
       </div>

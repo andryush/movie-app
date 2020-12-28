@@ -167,6 +167,12 @@ class Login extends Component {
     }));
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.showModal !== prevProps.showModal) {
+      this.toggleModal();
+    }
+  }
+
   render() {
     return (
       <div>

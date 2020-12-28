@@ -7,6 +7,8 @@ export default (Component) =>
       super();
       this.state = {
         movies: [],
+        favorites: [],
+        watchList: [],
       };
     }
 
@@ -34,6 +36,22 @@ export default (Component) =>
       });
     };
 
+    updateFavorites = () => {
+      if (this.props.favorites) {
+        this.setState({
+          favorites: this.props.favorites,
+        });
+      }
+    };
+
+    updateWatchList = () => {
+      if (this.props.watchList) {
+        this.setState({
+          watchList: this.props.watchList,
+        });
+      }
+    };
+
     componentDidMount() {
       this.getMovies(this.props.filters, this.props.page);
     }
@@ -47,16 +65,27 @@ export default (Component) =>
       if (this.props.page !== prevProps.page) {
         this.getMovies(this.props.filters, this.props.page);
       }
+
+      if (this.props.favorites !== prevProps.favorites) {
+        this.updateFavorites();
+      }
+
+      if (this.props.watchList !== prevProps.watchList) {
+        this.updateWatchList();
+      }
     }
 
     render() {
-      const { movies } = this.state;
+      const { movies, favorites, watchList } = this.state;
       return (
         <Component
           movies={movies}
+          favorites={favorites}
+          watchList={watchList}
           addToFavorites={this.props.addToFavorites}
           removeFromFavorites={this.props.removeFromFavorites}
-          favorites={this.props.favorites}
+          addToWatchList={this.props.addToWatchList}
+          removeFromWatchList={this.props.removeFromWatchList}
           session_id={this.props.session_id}
         />
       );

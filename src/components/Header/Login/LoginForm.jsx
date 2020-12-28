@@ -126,14 +126,23 @@ class LoginForm extends Component {
       });
       this.props.updateUser(accountDetails);
 
-      const { results } = await CallApi.get(
+      const favorites = await CallApi.get(
         "account/{account_id}/favorite/movies",
         {
           params: { session_id: session_id },
         }
       );
+      this.props.setFavorites(favorites.results);
 
-      this.props.getFavorites(results);
+      const watchList = await CallApi.get(
+        "account/{account_id}/watchlist/movies",
+        {
+          params: {
+            session_id: session_id,
+          },
+        }
+      );
+      this.props.setWatchList(watchList.results);
     } catch (error) {
       this.setState({
         submitting: false,

@@ -4,7 +4,6 @@ import MoviesList from "../Movies/MoviesList";
 import Filters from "../Filters/Filters";
 import Header from "../Header/Header";
 import CallApi from "../../api/api";
-import { API_URL, API_KEY_V3, fetchApi } from "../../api/api";
 
 import Cookies from "universal-cookie";
 
@@ -26,6 +25,7 @@ class App extends Component {
       total_pages: null,
       favorites: [],
       watchList: [],
+      showModal: false,
     };
     this.state = this.initialState;
   }
@@ -79,31 +79,40 @@ class App extends Component {
     this.setState({
       session_id: null,
       user: null,
-      favorites: null,
+      favorites: [],
+      watchList: [],
     });
   };
 
-  getFavorites = (favorites) => {
+  setFavorites = (favorites) => {
     this.setState({
       favorites: favorites,
     });
   };
 
   addToFavorites = (id) => {
-    CallApi.post("account/{account_id}/favorite", {
-      params: {
-        session_id: this.state.session_id,
-      },
-      body: {
-        media_type: "movie",
-        media_id: id,
-        favorite: true,
-      },
-    }).then(
-      fetchApi(
-        `${API_URL}account/{account_id}/favorite/movies?api_key=${API_KEY_V3}&session_id=${this.state.session_id}`
-      ).then((data) => this.getFavorites(data.results))
-    );
+    if (this.state.session_id) {
+      CallApi.post("account/{account_id}/favorite", {
+        params: {
+          session_id: this.state.session_id,
+        },
+        body: {
+          media_type: "movie",
+          media_id: id,
+          favorite: true,
+        },
+      })
+        .then(() =>
+          CallApi.get("account/{account_id}/favorite/movies", {
+            params: { session_id: this.state.session_id },
+          })
+        )
+        .then((data) => this.setFavorites(data.results));
+    } else {
+      this.setState((prevState) => ({
+        showModal: !prevState.showModal,
+      }));
+    }
   };
 
   removeFromFavorites = (id) => {
@@ -116,11 +125,67 @@ class App extends Component {
         media_id: id,
         favorite: false,
       },
-    }).then(
-      fetchApi(
-        `${API_URL}account/{account_id}/favorite/movies?api_key=${API_KEY_V3}&session_id=${this.state.session_id}`
-      ).then((data) => this.getFavorites(data.results))
-    );
+    })
+      .then(() =>
+        CallApi.get("account/{account_id}/favorite/movies", {
+          params: { session_id: this.state.session_id },
+        })
+      )
+      .then((data) => this.setFavorites(data.results));
+  };
+
+  setWatchList = (watchList) => {
+    this.setState({
+      watchList: watchList,
+    });
+  };
+
+  addToWatchList = (id) => {
+    if (this.state.session_id) {
+      CallApi.post("account/{account_id}/watchlist", {
+        params: {
+          session_id: this.state.session_id,
+        },
+        body: {
+          media_type: "movie",
+          media_id: id,
+          watchlist: true,
+        },
+      })
+        .then(() =>
+          CallApi.get("account/{account_id}/watchlist/movies", {
+            params: {
+              session_id: this.state.session_id,
+            },
+          })
+        )
+        .then((data) => this.setWatchList(data.results));
+    } else {
+      this.setState((prevState) => ({
+        showModal: !prevState.showModal,
+      }));
+    }
+  };
+
+  removeFromWatchList = (id) => {
+    CallApi.post("account/{account_id}/watchlist", {
+      params: {
+        session_id: this.state.session_id,
+      },
+      body: {
+        media_type: "movie",
+        media_id: id,
+        watchlist: false,
+      },
+    })
+      .then(() =>
+        CallApi.get("account/{account_id}/watchlist/movies", {
+          params: {
+            session_id: this.state.session_id,
+          },
+        })
+      )
+      .then((data) => this.setWatchList(data.results));
   };
 
   componentDidMount() {
@@ -129,15 +194,24 @@ class App extends Component {
       this.setState({
         session_id: session_id,
       });
-      fetchApi(
-        `${API_URL}account?api_key=${API_KEY_V3}&session_id=${session_id}`
-      )
-        .then((user) => this.updateUser(user))
-        .then(
-          fetchApi(
-            `${API_URL}account/{account_id}/favorite/movies?api_key=${API_KEY_V3}&session_id=${session_id}`
-          ).then((data) => this.getFavorites(data.results))
-        );
+
+      CallApi.get("account", {
+        params: {
+          session_id: session_id,
+        },
+      }).then((user) => this.updateUser(user));
+
+      CallApi.get("account/{account_id}/favorite/movies", {
+        params: {
+          session_id: session_id,
+        },
+      }).then((data) => this.setFavorites(data.results));
+
+      CallApi.get("account/{account_id}/watchlist/movies", {
+        params: {
+          session_id: session_id,
+        },
+      }).then((data) => this.setWatchList(data.results));
     }
   }
 
@@ -151,12 +225,15 @@ class App extends Component {
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
           deleteSessionId: this.deleteSessionId,
-          getFavorites: this.getFavorites,
+          setFavorites: this.setFavorites,
+          setWatchList: this.setWatchList,
           favorites: this.state.favorites,
+          watchList: this.state.watchList,
+          showModal: this.state.showModal,
         }}
       >
         <>
-          <Header user={this.state.user} />
+          <Header user={this.state.user} showModal={this.state.showModal} />
           <div className="container">
             <div className="row">
               <div className="col-4 mt-4">
@@ -185,6 +262,10 @@ class App extends Component {
                   addToFavorites={this.addToFavorites}
                   removeFromFavorites={this.removeFromFavorites}
                   favorites={this.state.favorites}
+                  watchList={this.state.watchList}
+                  setFavorites={this.setFavorites}
+                  addToWatchList={this.addToWatchList}
+                  removeFromWatchList={this.removeFromWatchList}
                 />
               </div>
             </div>

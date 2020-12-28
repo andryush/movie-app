@@ -6,35 +6,40 @@ import PropTypes from "prop-types";
 
 const MoviesList = ({
   movies,
+  favorites,
+  watchList,
   addToFavorites,
   removeFromFavorites,
-  favorites,
-  session_id,
+  addToWatchList,
+  removeFromWatchList,
 }) => {
-  let favoriteIds = [];
-  if (favorites.length > 0) {
-    favoriteIds = favorites.map((el) => el.id);
-  }
-
-  let isFav = false;
-
+  let isFavorite = false;
+  let isWatchListed = false;
   return (
     <div className="row">
       {movies.map((movie) => {
-        if (session_id) {
-          if (favoriteIds.includes(movie.id)) {
-            isFav = true;
-          } else {
-            isFav = false;
-          }
+        if (favorites) {
+          let favoriteIds = favorites.map((el) => el.id);
+          favoriteIds.includes(movie.id)
+            ? (isFavorite = true)
+            : (isFavorite = false);
+        }
+        if (watchList) {
+          let watchListIds = watchList.map((el) => el.id);
+          watchListIds.includes(movie.id)
+            ? (isWatchListed = true)
+            : (isWatchListed = false);
         }
         return (
           <div key={movie.id} className="col-6 mb-4">
             <MovieItem
               item={movie}
+              isFavorite={isFavorite}
+              isWatchListed={isWatchListed}
               addToFavorites={addToFavorites}
               removeFromFavorites={removeFromFavorites}
-              isFav={isFav}
+              addToWatchList={addToWatchList}
+              removeFromWatchList={removeFromWatchList}
             />
           </div>
         );

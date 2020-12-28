@@ -20,8 +20,9 @@ class Header extends Component {
             <UserMenu />
           ) : (
             <Login
-            // updateUser={this.props.updateUser}
-            // updateSessionId={this.props.updateSessionId}
+              showModal={this.props.showModal}
+              // updateUser={this.props.updateUser}
+              // updateSessionId={this.props.updateSessionId}
             />
           )}
         </div>
