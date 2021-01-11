@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-// import { API_URL, API_KEY_V3, fetchApi } from "../../../api/api";
 import CallApi from "../../../api/api";
 
-// import { AppContext } from "../../App/App";
 import AppContextHOC from "../../HOC/AppContextHOC";
 import "./LoginForm.css";
 
@@ -65,25 +63,7 @@ class LoginForm extends Component {
 
   onSubmit = async () => {
     try {
-      // const data = await fetchApi(
-      //   `${API_URL}authentication/token/new?api_key=${API_KEY_V3}`
       const data = await CallApi.get("authentication/token/new");
-
-      // const requestToken = await fetchApi(
-      //   `${API_URL}authentication/token/validate_with_login?api_key=${API_KEY_V3}`,
-      //   {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       username: this.state.username,
-      //       password: this.state.password,
-      //       request_token: data.request_token,
-      //     }),
-      //   }
-      // );
 
       const requestToken = await CallApi.post(
         "authentication/token/validate_with_login",
@@ -97,29 +77,13 @@ class LoginForm extends Component {
         }
       );
 
-      // const { session_id } = await fetchApi(
-      //   `${API_URL}authentication/session/new?api_key=${API_KEY_V3}`,
-      //   {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       request_token: requestToken.request_token,
-      //     }),
-      //   }
-      // );
       const { session_id } = await CallApi.post("authentication/session/new", {
         body: {
           request_token: requestToken.request_token,
         },
       });
       this.props.updateSessionId(session_id);
-
-      // const accountDetails = await fetchApi(
-      //   `${API_URL}account?api_key=${API_KEY_V3}&session_id=${session_id}`
-      // );
+      this.props.toggleModal();
 
       const accountDetails = await CallApi.get("account", {
         params: { session_id: session_id },
@@ -256,16 +220,3 @@ class LoginForm extends Component {
   }
 }
 export default AppContextHOC(LoginForm);
-// export default (props) => {
-//   return (
-//     <AppContext.Consumer>
-//       {(context) => (
-//         <LoginForm
-//           updateUser={context.updateUser}
-//           updateSessionId={context.updateSessionId}
-//           {...props}
-//         />
-//       )}
-//     </AppContext.Consumer>
-//   );
-// };

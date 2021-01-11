@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Login from "../Header/Login/Login";
 import UserMenu from "../Header/UserMenu";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class Header extends Component {
   render() {
@@ -19,15 +20,11 @@ class Header extends Component {
           {this.props.user ? (
             <UserMenu />
           ) : (
-            <Login
-              showModal={this.props.showModal}
-              // updateUser={this.props.updateUser}
-              // updateSessionId={this.props.updateSessionId}
-            />
+            <Login toggleModal={this.props.toggleModal} />
           )}
         </div>
       </nav>
     );
   }
 }
-export default Header;
+export default AppContextHOC(Header);

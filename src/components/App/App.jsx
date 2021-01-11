@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import MoviesList from "../Movies/MoviesList";
 import Filters from "../Filters/Filters";
 import Header from "../Header/Header";
+import LoginModal from "../Header/Login/LoginModal";
 import CallApi from "../../api/api";
 
 import Cookies from "universal-cookie";
@@ -188,6 +189,12 @@ class App extends Component {
       .then((data) => this.setWatchList(data.results));
   };
 
+  toggleModal = () => {
+    this.setState((prevState) => ({
+      showModal: !prevState.showModal,
+    }));
+  };
+
   componentDidMount() {
     const session_id = cookies.get("session_id");
     if (session_id) {
@@ -230,10 +237,17 @@ class App extends Component {
           favorites: this.state.favorites,
           watchList: this.state.watchList,
           showModal: this.state.showModal,
+          toggleModal: this.toggleModal,
         }}
       >
         <>
-          <Header user={this.state.user} showModal={this.state.showModal} />
+          {this.state.showModal && (
+            <LoginModal
+              showModal={this.state.showModal}
+              toggleModal={this.toggleModal}
+            />
+          )}
+          <Header />
           <div className="container">
             <div className="row">
               <div className="col-4 mt-4">
