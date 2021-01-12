@@ -16,7 +16,7 @@ class App extends Component {
     super();
     this.initialState = {
       user: null,
-      session_id: null,
+      session_id: cookies.get("session_id") || null,
       filters: {
         sort_by: "popularity.desc",
         primary_release_year: null,
@@ -196,7 +196,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const session_id = cookies.get("session_id");
+    const { session_id } = this.state;
     if (session_id) {
       this.setState({
         session_id: session_id,
