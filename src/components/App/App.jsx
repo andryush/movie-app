@@ -252,10 +252,6 @@ class App extends Component {
                   page={page}
                   onChangePage={this.onChangePage}
                   getTotalPages={this.getTotalPages}
-                  favorites={this.state.favorites}
-                  watchList={this.state.watchList}
-                  addRemoveWatchList={this.addRemoveWatchList}
-                  addRemoveFavorites={this.addRemoveFavorites}
                 />
               </div>
             </div>
