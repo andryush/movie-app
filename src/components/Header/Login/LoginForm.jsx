@@ -83,12 +83,12 @@ class LoginForm extends Component {
         },
       });
       this.props.updateSessionId(session_id);
-      this.props.toggleModal();
 
       const accountDetails = await CallApi.get("account", {
         params: { session_id: session_id },
       });
       this.props.updateUser(accountDetails);
+      this.props.toggleModal();
 
       const favorites = await CallApi.get(
         "account/{account_id}/favorite/movies",
@@ -96,7 +96,7 @@ class LoginForm extends Component {
           params: { session_id: session_id },
         }
       );
-      this.props.setFavorites(favorites.results);
+      this.props.updateFavorites(favorites.results);
 
       const watchList = await CallApi.get(
         "account/{account_id}/watchlist/movies",
@@ -106,7 +106,7 @@ class LoginForm extends Component {
           },
         }
       );
-      this.props.setWatchList(watchList.results);
+      this.props.updateWatchList(watchList.results);
     } catch (error) {
       this.setState({
         submitting: false,

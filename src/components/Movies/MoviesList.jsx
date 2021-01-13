@@ -8,10 +8,8 @@ const MoviesList = ({
   movies,
   favorites,
   watchList,
-  addToFavorites,
-  removeFromFavorites,
-  addToWatchList,
-  removeFromWatchList,
+  addRemoveFavorites,
+  addRemoveWatchList,
 }) => {
   let isFavorite = false;
   let isWatchListed = false;
@@ -36,10 +34,8 @@ const MoviesList = ({
               item={movie}
               isFavorite={isFavorite}
               isWatchListed={isWatchListed}
-              addToFavorites={addToFavorites}
-              removeFromFavorites={removeFromFavorites}
-              addToWatchList={addToWatchList}
-              removeFromWatchList={removeFromWatchList}
+              addRemoveFavorites={addRemoveFavorites}
+              addRemoveWatchList={addRemoveWatchList}
             />
           </div>
         );

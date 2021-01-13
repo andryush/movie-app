@@ -82,11 +82,9 @@ export default (Component) =>
           movies={movies}
           favorites={favorites}
           watchList={watchList}
-          addToFavorites={this.props.addToFavorites}
-          removeFromFavorites={this.props.removeFromFavorites}
-          addToWatchList={this.props.addToWatchList}
-          removeFromWatchList={this.props.removeFromWatchList}
           session_id={this.props.session_id}
+          addRemoveFavorites={this.props.addRemoveFavorites}
+          addRemoveWatchList={this.props.addRemoveWatchList}
         />
       );
     }

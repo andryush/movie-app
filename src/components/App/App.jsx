@@ -58,6 +58,14 @@ class App extends Component {
     this.setState(this.initialState);
   };
 
+  getUser = (session_id) => {
+    return CallApi.get("account", {
+      params: {
+        session_id: session_id,
+      },
+    });
+  };
+
   updateUser = (user) => {
     this.setState({
       user: user,
@@ -85,14 +93,30 @@ class App extends Component {
     });
   };
 
-  setFavorites = (favorites) => {
+  //// Favorites methods BEGIN ///
+  // Getting favorites from server
+  getFavorites = () => {
+    return CallApi.get("account/{account_id}/favorite/movies", {
+      params: { session_id: this.state.session_id },
+    });
+  };
+
+  // Updating favorites
+  updateFavorites = (favorites) => {
     this.setState({
       favorites: favorites,
     });
   };
 
-  addToFavorites = (id) => {
-    if (this.state.session_id) {
+  // Adding or removing favorites
+  addRemoveFavorites = (id) => {
+    if (!this.state.session_id) {
+      this.setState((prevState) => ({
+        showModal: !prevState.showModal,
+      }));
+    } else {
+      const favoriteIds = this.state.favorites.map((favorite) => favorite.id);
+      const isFavorite = favoriteIds.includes(id) ? false : true;
       CallApi.post("account/{account_id}/favorite", {
         params: {
           session_id: this.state.session_id,
@@ -100,49 +124,43 @@ class App extends Component {
         body: {
           media_type: "movie",
           media_id: id,
-          favorite: true,
+          favorite: isFavorite,
         },
       })
-        .then(() =>
-          CallApi.get("account/{account_id}/favorite/movies", {
-            params: { session_id: this.state.session_id },
-          })
-        )
-        .then((data) => this.setFavorites(data.results));
-    } else {
-      this.setState((prevState) => ({
-        showModal: !prevState.showModal,
-      }));
+        .then(() => this.getFavorites())
+        .then((data) => this.updateFavorites(data.results));
     }
   };
+  //// Favorites methods END ////
 
-  removeFromFavorites = (id) => {
-    CallApi.post("account/{account_id}/favorite", {
+  //// WatchList methods BEGIN
+  // Getting watchList from server
+  getWatchList = () => {
+    return CallApi.get("account/{account_id}/watchlist/movies", {
       params: {
         session_id: this.state.session_id,
       },
-      body: {
-        media_type: "movie",
-        media_id: id,
-        favorite: false,
-      },
-    })
-      .then(() =>
-        CallApi.get("account/{account_id}/favorite/movies", {
-          params: { session_id: this.state.session_id },
-        })
-      )
-      .then((data) => this.setFavorites(data.results));
+    });
   };
 
-  setWatchList = (watchList) => {
+  // Updating watchList
+  updateWatchList = (watchList) => {
     this.setState({
       watchList: watchList,
     });
   };
 
-  addToWatchList = (id) => {
-    if (this.state.session_id) {
+  // Adding or removing watchlist
+  addRemoveWatchList = (id) => {
+    if (!this.state.session_id) {
+      this.setState((prevState) => ({
+        showModal: !prevState.showModal,
+      }));
+    } else {
+      const watchListIds = this.state.watchList.map(
+        (watchList) => watchList.id
+      );
+      const isWatchListed = watchListIds.includes(id) ? false : true;
       CallApi.post("account/{account_id}/watchlist", {
         params: {
           session_id: this.state.session_id,
@@ -150,44 +168,14 @@ class App extends Component {
         body: {
           media_type: "movie",
           media_id: id,
-          watchlist: true,
+          watchlist: isWatchListed,
         },
       })
-        .then(() =>
-          CallApi.get("account/{account_id}/watchlist/movies", {
-            params: {
-              session_id: this.state.session_id,
-            },
-          })
-        )
-        .then((data) => this.setWatchList(data.results));
-    } else {
-      this.setState((prevState) => ({
-        showModal: !prevState.showModal,
-      }));
+        .then(() => this.getWatchList())
+        .then((data) => this.updateWatchList(data.results));
     }
   };
-
-  removeFromWatchList = (id) => {
-    CallApi.post("account/{account_id}/watchlist", {
-      params: {
-        session_id: this.state.session_id,
-      },
-      body: {
-        media_type: "movie",
-        media_id: id,
-        watchlist: false,
-      },
-    })
-      .then(() =>
-        CallApi.get("account/{account_id}/watchlist/movies", {
-          params: {
-            session_id: this.state.session_id,
-          },
-        })
-      )
-      .then((data) => this.setWatchList(data.results));
-  };
+  //// WatchList methods END
 
   toggleModal = () => {
     this.setState((prevState) => ({
@@ -201,24 +189,9 @@ class App extends Component {
       this.setState({
         session_id: session_id,
       });
-
-      CallApi.get("account", {
-        params: {
-          session_id: session_id,
-        },
-      }).then((user) => this.updateUser(user));
-
-      CallApi.get("account/{account_id}/favorite/movies", {
-        params: {
-          session_id: session_id,
-        },
-      }).then((data) => this.setFavorites(data.results));
-
-      CallApi.get("account/{account_id}/watchlist/movies", {
-        params: {
-          session_id: session_id,
-        },
-      }).then((data) => this.setWatchList(data.results));
+      this.getUser(session_id).then((user) => this.updateUser(user));
+      this.getFavorites().then((data) => this.updateFavorites(data.results));
+      this.getWatchList().then((data) => this.updateWatchList(data.results));
     }
   }
 
@@ -232,9 +205,9 @@ class App extends Component {
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
           deleteSessionId: this.deleteSessionId,
-          setFavorites: this.setFavorites,
-          setWatchList: this.setWatchList,
+          updateWatchList: this.updateWatchList,
           favorites: this.state.favorites,
+          updateFavorites: this.updateFavorites,
           watchList: this.state.watchList,
           showModal: this.state.showModal,
           toggleModal: this.toggleModal,
@@ -273,13 +246,10 @@ class App extends Component {
                   page={page}
                   onChangePage={this.onChangePage}
                   getTotalPages={this.getTotalPages}
-                  addToFavorites={this.addToFavorites}
-                  removeFromFavorites={this.removeFromFavorites}
                   favorites={this.state.favorites}
                   watchList={this.state.watchList}
-                  setFavorites={this.setFavorites}
-                  addToWatchList={this.addToWatchList}
-                  removeFromWatchList={this.removeFromWatchList}
+                  addRemoveWatchList={this.addRemoveWatchList}
+                  addRemoveFavorites={this.addRemoveFavorites}
                 />
               </div>
             </div>

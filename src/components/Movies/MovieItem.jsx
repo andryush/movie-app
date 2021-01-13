@@ -16,14 +16,14 @@ function MovieItem(props) {
         <div className="d-flex justify-content-between">
           <div className="card-text flex-grow-1">Рейтинг: {vote_average}</div>
           {props.isFavorite ? (
-            <Star onClick={() => props.removeFromFavorites(id)} />
+            <Star onClick={() => props.addRemoveFavorites(id)} />
           ) : (
-            <StarBorder onClick={() => props.addToFavorites(id)} />
+            <StarBorder onClick={() => props.addRemoveFavorites(id)} />
           )}
           {props.isWatchListed ? (
-            <Bookmark onClick={() => props.removeFromWatchList(id)} />
+            <Bookmark onClick={() => props.addRemoveWatchList(id)} />
           ) : (
-            <BookmarkBorder onClick={() => props.addToWatchList(id)} />
+            <BookmarkBorder onClick={() => props.addRemoveWatchList(id)} />
           )}
         </div>
       </div>
