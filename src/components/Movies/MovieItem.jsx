@@ -1,5 +1,6 @@
 import React from "react";
-import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
+import FavoriteIcon from "../Movies/Icons/FavoriteIcon";
+import WatchListIcon from "../Movies/Icons/WatchListIcon";
 import DefaultPoster from "../../assets/images/poster-not-found.jpg";
 
 function MovieItem(props) {
@@ -15,16 +16,8 @@ function MovieItem(props) {
         <h6 className="card-title">{title}</h6>
         <div className="d-flex justify-content-between">
           <div className="card-text flex-grow-1">Рейтинг: {vote_average}</div>
-          {props.isFavorite ? (
-            <Star onClick={() => props.addRemoveFavorites(id)} />
-          ) : (
-            <StarBorder onClick={() => props.addRemoveFavorites(id)} />
-          )}
-          {props.isWatchListed ? (
-            <Bookmark onClick={() => props.addRemoveWatchList(id)} />
-          ) : (
-            <BookmarkBorder onClick={() => props.addRemoveWatchList(id)} />
-          )}
+          <FavoriteIcon id={id} />
+          <WatchListIcon id={id} />
         </div>
       </div>
     </div>

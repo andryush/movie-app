@@ -207,8 +207,10 @@ class App extends Component {
           deleteSessionId: this.deleteSessionId,
           updateWatchList: this.updateWatchList,
           favorites: this.state.favorites,
+          addRemoveFavorites: this.addRemoveFavorites,
           updateFavorites: this.updateFavorites,
           watchList: this.state.watchList,
+          addRemoveWatchList: this.addRemoveWatchList,
           showModal: this.state.showModal,
           toggleModal: this.toggleModal,
         }}
