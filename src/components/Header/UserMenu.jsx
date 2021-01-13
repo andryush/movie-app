@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
-// import { AppContext } from "../App/App";
 
 class UserMenu extends React.Component {
   state = {
@@ -55,10 +54,3 @@ class UserMenu extends React.Component {
   }
 }
 export default AppContextHOC(UserMenu);
-// export default (props) => {
-//   return (
-//     <AppContext.Consumer>
-//       {(context) => <User user={context.user} {...props} />}
-//     </AppContext.Consumer>
-//   );
-// };

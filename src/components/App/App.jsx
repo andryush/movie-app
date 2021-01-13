@@ -190,8 +190,12 @@ class App extends Component {
         session_id: session_id,
       });
       this.getUser(session_id).then((user) => this.updateUser(user));
-      this.getFavorites().then((data) => this.updateFavorites(data.results));
-      this.getWatchList().then((data) => this.updateWatchList(data.results));
+      this.getFavorites().then((favorites) =>
+        this.updateFavorites(favorites.results)
+      );
+      this.getWatchList().then((watchList) =>
+        this.updateWatchList(watchList.results)
+      );
     }
   }
 

@@ -22,12 +22,6 @@ export default (Component) =>
     }
 
     onChangeGenre = (event) => {
-      // const newSelectedGenres = [...this.props.genres];
-      // if (newSelectedGenres.indexOf(id) !== -1) {
-      //   newSelectedGenres.splice(newSelectedGenres.indexOf(id), 1);
-      // } else {
-      //   newSelectedGenres.push(id);
-      // }
       const id = Number(event.target.id);
       const { genres } = this.props;
       this.props.onChangeFilters({
