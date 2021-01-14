@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-
-import MoviesList from "../Movies/MoviesList";
-import Filters from "../Filters/Filters";
 import Header from "../Header/Header";
 import LoginModal from "../Header/Login/LoginModal";
 import CallApi from "../../api/api";
-
+import MoviesPage from "../pages/MoviesPage/MoviesPage";
+import MoviePage from "../pages/MoviePage/MoviePage";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 export const AppContext = React.createContext();
@@ -14,49 +13,14 @@ const cookies = new Cookies();
 class App extends Component {
   constructor() {
     super();
-    this.initialState = {
+    this.state = {
       user: null,
       session_id: cookies.get("session_id") || null,
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: null,
-        genres: [],
-      },
-      page: 1,
-      total_pages: null,
       favorites: [],
       watchList: [],
       showModal: false,
     };
-    this.state = this.initialState;
   }
-
-  onChangeFilters = (event) => {
-    const newFilters = {
-      ...this.state.filters,
-      [event.target.name]: event.target.value,
-    };
-
-    this.setState({
-      filters: newFilters,
-    });
-  };
-
-  onChangePage = (page) => {
-    this.setState({
-      page: page,
-    });
-  };
-
-  getTotalPages = (total_pages) => {
-    this.setState({
-      total_pages,
-    });
-  };
-
-  resetFilters = (event) => {
-    this.setState(this.initialState);
-  };
 
   getUser = (session_id) => {
     return CallApi.get("account", {
@@ -200,64 +164,38 @@ class App extends Component {
   }
 
   render() {
-    const { filters, page, total_pages } = this.state;
     return (
-      <AppContext.Provider
-        value={{
-          user: this.state.user,
-          session_id: this.state.session_id,
-          updateUser: this.updateUser,
-          updateSessionId: this.updateSessionId,
-          deleteSessionId: this.deleteSessionId,
-          updateWatchList: this.updateWatchList,
-          favorites: this.state.favorites,
-          addRemoveFavorites: this.addRemoveFavorites,
-          updateFavorites: this.updateFavorites,
-          watchList: this.state.watchList,
-          addRemoveWatchList: this.addRemoveWatchList,
-          showModal: this.state.showModal,
-          toggleModal: this.toggleModal,
-        }}
-      >
-        <>
-          {this.state.showModal && (
-            <LoginModal
-              showModal={this.state.showModal}
-              toggleModal={this.toggleModal}
-            />
-          )}
-          <Header />
-          <div className="container">
-            <div className="row">
-              <div className="col-4 mt-4">
-                <div className="card" style={{ width: "100%" }}>
-                  <div className="card-body">
-                    <h3>Фильтры:</h3>
-                    <Filters
-                      onChangeFilters={this.onChangeFilters}
-                      filters={filters}
-                      page={page}
-                      total_pages={total_pages}
-                      onChangePage={this.onChangePage}
-                      getGenres={this.getGenres}
-                      resetFilters={this.resetFilters}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-8 mt-4">
-                <MoviesList
-                  session_id={this.state.session_id}
-                  filters={filters}
-                  page={page}
-                  onChangePage={this.onChangePage}
-                  getTotalPages={this.getTotalPages}
-                />
-              </div>
-            </div>
-          </div>
-        </>
-      </AppContext.Provider>
+      <Router>
+        <AppContext.Provider
+          value={{
+            user: this.state.user,
+            session_id: this.state.session_id,
+            updateUser: this.updateUser,
+            updateSessionId: this.updateSessionId,
+            deleteSessionId: this.deleteSessionId,
+            updateWatchList: this.updateWatchList,
+            favorites: this.state.favorites,
+            addRemoveFavorites: this.addRemoveFavorites,
+            updateFavorites: this.updateFavorites,
+            watchList: this.state.watchList,
+            addRemoveWatchList: this.addRemoveWatchList,
+            showModal: this.state.showModal,
+            toggleModal: this.toggleModal,
+          }}
+        >
+          <>
+            {this.state.showModal && (
+              <LoginModal
+                showModal={this.state.showModal}
+                toggleModal={this.toggleModal}
+              />
+            )}
+            <Header />
+            <Route exact path="/" component={MoviesPage} />
+            <Route path="/movie/:id" component={MoviePage} />
+          </>
+        </AppContext.Provider>
+      </Router>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Login from "../Header/Login/Login";
 import UserMenu from "../Header/UserMenu";
@@ -9,14 +10,14 @@ class Header extends Component {
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
-          <a
+          <Link
+            to="/"
             className="navbar-brand"
             href="https://www.themoviedb.org/"
-            target="_blank"
             rel="noopener noreferrer"
           >
             Movie App
-          </a>
+          </Link>
           {this.props.user ? (
             <UserMenu />
           ) : (
