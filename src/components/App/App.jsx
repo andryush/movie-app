@@ -4,6 +4,9 @@ import LoginModal from "../Header/Login/LoginModal";
 import CallApi from "../../api/api";
 import MoviesPage from "../pages/MoviesPage/MoviesPage";
 import MoviePage from "../pages/MoviePage/MoviePage";
+import MovieDetail from "../pages/MovieDetail/MovieDetails";
+import MovieVideo from "../pages/MovieVideo/MovieVideo";
+import MovieCredit from "../pages/MovieCredit/MovieCredit";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Cookies from "universal-cookie";
 
@@ -191,8 +194,12 @@ class App extends Component {
               />
             )}
             <Header />
+
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
+            <Route path="/movie/:id/details" component={MovieDetail} />
+            <Route path="/movie/:id/videos" component={MovieVideo} />
+            <Route path="/movie/:id/credits" component={MovieCredit} />
           </>
         </AppContext.Provider>
       </Router>

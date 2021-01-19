@@ -15,7 +15,7 @@ function MovieItem(props) {
 
   return (
     <div className="card h-100" style={{ width: "100%" }}>
-      <Link to={`/movie/${id}`}>
+      <Link to={`/movie/${id}/details`}>
         <img
           className="card-img-top card-img--height"
           src={poster}
@@ -24,7 +24,7 @@ function MovieItem(props) {
       </Link>
       <div className="card-body">
         <h6 className="card-title">
-          <Link to={`/movie/${id}`} className="link-style">
+          <Link to={`/movie/${id}/details`} className="link-style">
             {title}
           </Link>
         </h6>

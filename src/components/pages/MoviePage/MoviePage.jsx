@@ -1,9 +1,9 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import { Jumbotron, Container } from "reactstrap";
 import DefaultPoster from "../../../assets/images/poster-not-found.jpg";
 import FavoriteIcon from "../../Movies/Icons/FavoriteIcon";
 import WatchListIcon from "../../Movies/Icons/WatchListIcon";
+import Tabs from "../../Movies/Tabs";
 
 class MoviePage extends React.Component {
   state = {
@@ -35,7 +35,6 @@ class MoviePage extends React.Component {
         ? DefaultPoster
         : `https://image.tmdb.org/t/p/w500${poster_path || backdrop_path}`;
     return (
-      //   <Jumbotron>
       <div className="container mt-5">
         <div className="wrapper d-flex">
           <div className="p-0">
@@ -49,8 +48,10 @@ class MoviePage extends React.Component {
             <WatchListIcon id={id} />
           </div>
         </div>
+        <div className="mt-5">
+          <Tabs id={id} />
+        </div>
       </div>
-      //   </Jumbotron>
     );
   }
 }
