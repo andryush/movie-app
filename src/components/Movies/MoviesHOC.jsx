@@ -1,4 +1,5 @@
 import React from "react";
+import { Spinner } from "reactstrap";
 import CallApi from "../../api/api";
 
 export default (Component) =>
@@ -7,10 +8,17 @@ export default (Component) =>
       super();
       this.state = {
         movies: [],
+        showSpinner: false,
       };
     }
+    toggleSpinner = () => {
+      this.setState((prevState) => ({
+        showSpinner: !prevState.showSpinner,
+      }));
+    };
 
     getMovies = (filters, page) => {
+      this.toggleSpinner();
       const { sort_by, primary_release_year, genres } = filters;
 
       const queryStringParams = {
@@ -26,12 +34,14 @@ export default (Component) =>
 
       CallApi.get("discover/movie", {
         params: queryStringParams,
-      }).then((data) => {
-        this.setState({
-          movies: data.results,
-        });
-        this.props.getTotalPages(data.total_pages);
-      });
+      })
+        .then((data) => {
+          this.setState({
+            movies: data.results,
+          });
+          this.props.getTotalPages(data.total_pages);
+        })
+        .then(() => this.toggleSpinner());
     };
 
     componentDidMount() {
@@ -51,6 +61,19 @@ export default (Component) =>
 
     render() {
       const { movies } = this.state;
-      return <Component movies={movies} />;
+      return (
+        <>
+          {this.state.showSpinner ? (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: "100vh" }}
+            >
+              <Spinner />
+            </div>
+          ) : (
+            <Component movies={movies} />
+          )}
+        </>
+      );
     }
   };

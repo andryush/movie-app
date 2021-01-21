@@ -1,22 +1,6 @@
 import React from "react";
-import CallApi from "../../../api/api";
+
 class MovieDetail extends React.Component {
-  state = {
-    movie: [],
-  };
-
-  componentDidMount() {
-    CallApi.get(`movie/${this.props.match.params.id}`, {
-      params: { language: "ru-RU" },
-    }).then((movie) => this.updateMovie(movie));
-  }
-
-  updateMovie = (movie) => {
-    this.setState({
-      movie: movie,
-    });
-  };
-
   generateBagdeList = (badgeList) => {
     if (badgeList) {
       return badgeList.map((bagde) => {
@@ -40,7 +24,7 @@ class MovieDetail extends React.Component {
       runtime,
       genres,
       production_countries,
-    } = this.state.movie;
+    } = this.props.movie;
 
     return (
       <div className="container">
