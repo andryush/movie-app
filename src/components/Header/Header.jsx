@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Login from "../Header/Login/Login";
 import UserMenu from "../Header/UserMenu";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { AppContextHOC } from "../HOC/AppContextHOC";
 
 class Header extends Component {
   render() {

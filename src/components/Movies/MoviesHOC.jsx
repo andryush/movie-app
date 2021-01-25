@@ -2,7 +2,7 @@ import React from "react";
 import { Spinner } from "reactstrap";
 import CallApi from "../../api/api";
 
-export default (Component) =>
+export const MoviesHOC = (Component) =>
   class MoviesHOC extends React.Component {
     constructor() {
       super();

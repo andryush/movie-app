@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CallApi from "../../../api/api";
 
-import AppContextHOC from "../../HOC/AppContextHOC";
+import { AppContextHOC } from "../../HOC/AppContextHOC";
 import "./LoginForm.css";
 
 import classNames from "classnames";

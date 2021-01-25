@@ -1,14 +1,11 @@
 import React from "react";
 import { API_URL, API_KEY_V3 } from "../../api/api";
 
-export default (Component) =>
+export const GenresHOC = (Component) =>
   class GenresContainer extends React.Component {
-    constructor() {
-      super();
-      this.state = {
-        genresList: [],
-      };
-    }
+    state = {
+      genresList: [],
+    };
 
     componentDidMount() {
       const link = `${API_URL}genre/movie/list?api_key=${API_KEY_V3}&language=ru-RU`;

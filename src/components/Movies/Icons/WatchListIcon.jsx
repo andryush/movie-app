@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import { AppContextHOC } from "../../HOC/AppContextHOC";
 
 import { Bookmark, BookmarkBorder } from "@material-ui/icons";
 

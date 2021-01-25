@@ -1,6 +1,6 @@
 import React from "react";
 import MovieItem from "./MovieItem";
-import MoviesHOC from "./MoviesHOC";
+import { MoviesHOC } from "./MoviesHOC";
 
 import PropTypes from "prop-types";
 

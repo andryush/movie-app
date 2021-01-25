@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { AppContextHOC } from "../HOC/AppContextHOC";
 import CallApi from "../../api/api";
 import {
   Dropdown,

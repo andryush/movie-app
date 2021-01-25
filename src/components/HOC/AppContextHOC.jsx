@@ -1,7 +1,7 @@
 import React from "react";
 import { AppContext } from "../App/App";
 
-export default (Component) =>
+export const AppContextHOC = (Component) =>
   class extends React.Component {
     render() {
       return (
