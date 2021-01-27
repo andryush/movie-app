@@ -9,7 +9,7 @@ const initialState = {
   watchList: [],
 };
 
-export const reducerApp = (state = initialState, action) => {
+export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_SESSION_ID":
       cookies.set("session_id", action.payload, { path: "/", maxAge: 7200 });

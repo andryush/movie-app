@@ -1,37 +1,37 @@
-export const actionCreatorUpdateSessionId = (payload) => {
+export const updateSessionId = (payload) => {
   return {
     type: "UPDATE_SESSION_ID",
     payload,
   };
 };
 
-export const actionCreatorUpdateUser = (payload) => {
+export const updateUser = (payload) => {
   return {
     type: "UPDATE_USER",
     payload,
   };
 };
 
-export const actionCreatorDeleteSessionId = () => {
+export const deleteSessionId = () => {
   return {
     type: "DELETE_SESSION_ID",
   };
 };
 
-export const actionCreatorToggleModal = () => {
+export const toggleModal = () => {
   return {
     type: "TOGGLE_MODAL",
   };
 };
 
-export const actionCreatorUpdateFavorites = (payload) => {
+export const updateFavorites = (payload) => {
   return {
     type: "UPDATE_FAVORITES",
     payload,
   };
 };
 
-export const actionCreatorUpdateWatchList = (payload) => {
+export const updateWatchList = (payload) => {
   return {
     type: "UPDATE_WATCHLIST",
     payload,

@@ -5,15 +5,14 @@ import CallApi from "../../api/api";
 import MoviesPage from "../pages/MoviesPage/MoviesPage";
 import MoviePage from "../pages/MoviePage/MoviePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-//import Cookies from "universal-cookie";
 import { connect } from "react-redux";
 import {
-  actionCreatorUpdateSessionId,
-  actionCreatorUpdateUser,
-  actionCreatorDeleteSessionId,
-  actionCreatorToggleModal,
-  actionCreatorUpdateFavorites,
-  actionCreatorUpdateWatchList,
+  updateSessionId,
+  updateUser,
+  deleteSessionId,
+  toggleModal,
+  updateFavorites,
+  updateWatchList,
 } from "../actions/actions";
 
 export const AppContext = React.createContext();
@@ -205,25 +204,20 @@ class App extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
-    session_id: state.session_id,
-    showModal: state.showModal,
-    favorites: state.favorites,
-    watchList: state.watchList,
+    user: state.auth.user,
+    session_id: state.auth.session_id,
+    showModal: state.auth.showModal,
+    favorites: state.auth.favorites,
+    watchList: state.auth.watchList,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateSessionId: (session_id) =>
-      dispatch(actionCreatorUpdateSessionId(session_id)),
-    updateUser: (user) => dispatch(actionCreatorUpdateUser(user)),
-    deleteSessionId: () => dispatch(actionCreatorDeleteSessionId()),
-    toggleModal: () => dispatch(actionCreatorToggleModal()),
-    updateFavorites: (favorites) =>
-      dispatch(actionCreatorUpdateFavorites(favorites)),
-    updateWatchList: (watchList) =>
-      dispatch(actionCreatorUpdateWatchList(watchList)),
-  };
+const mapDispatchToProps = {
+  updateSessionId,
+  updateUser,
+  updateFavorites,
+  updateWatchList,
+  deleteSessionId,
+  toggleModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
