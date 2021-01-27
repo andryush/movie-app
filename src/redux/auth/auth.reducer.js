@@ -1,4 +1,5 @@
 import Cookies from "universal-cookie";
+import * as types from "./auth.types";
 const cookies = new Cookies();
 
 const initialState = {
@@ -11,14 +12,14 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "UPDATE_SESSION_ID":
+    case types.UPDATE_SESSION_ID:
       cookies.set("session_id", action.payload, { path: "/", maxAge: 7200 });
       return { ...state, session_id: cookies.get("session_id") };
 
-    case "UPDATE_USER":
+    case types.UPDATE_USER:
       return { ...state, user: action.payload };
 
-    case "DELETE_SESSION_ID":
+    case types.DELETE_SESSION_ID:
       cookies.remove("session_id");
       return {
         ...state,
@@ -29,13 +30,13 @@ export const authReducer = (state = initialState, action) => {
         watchList: [],
       };
 
-    case "TOGGLE_MODAL":
+    case types.TOGGLE_MODAL:
       return { ...state, showModal: !state.showModal };
 
-    case "UPDATE_FAVORITES":
+    case types.UPDATE_FAVORITES:
       return { ...state, favorites: action.payload };
 
-    case "UPDATE_WATCHLIST":
+    case types.UPDATE_WATCHLIST:
       return { ...state, watchList: action.payload };
 
     default:

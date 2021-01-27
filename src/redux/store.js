@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import rootReducer from "../reducers/rootReducer";
+import rootReducer from "./rootReducer";
 
 const logger = (store) => (next) => (action) => {
   console.log("I'am MIDDLEWARE, BITCH");

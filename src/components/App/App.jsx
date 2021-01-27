@@ -13,7 +13,7 @@ import {
   toggleModal,
   updateFavorites,
   updateWatchList,
-} from "../actions/actions";
+} from "../../redux/auth/auth.actions";
 
 export const AppContext = React.createContext();
 //const cookies = new Cookies();
