@@ -3,7 +3,7 @@ import { AppContextHOC } from "../../HOC/AppContextHOC";
 
 import { Bookmark, BookmarkBorder } from "@material-ui/icons";
 
-function WatchListIcon({ id, watchList, addRemoveWatchList }) {
+function WatchListIcon({ id, watchList, asyncAddRemoveWatchList }) {
   let isWatchListed = false;
   if (watchList.length > 0) {
     let watchListIDs = watchList.map((el) => el.id);
@@ -12,9 +12,9 @@ function WatchListIcon({ id, watchList, addRemoveWatchList }) {
   return (
     <>
       {isWatchListed ? (
-        <Bookmark onClick={() => addRemoveWatchList(id)} />
+        <Bookmark onClick={() => asyncAddRemoveWatchList(id)} />
       ) : (
-        <BookmarkBorder onClick={() => addRemoveWatchList(id)} />
+        <BookmarkBorder onClick={() => asyncAddRemoveWatchList(id)} />
       )}
     </>
   );

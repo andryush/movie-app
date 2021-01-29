@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Header from "../Header/Header";
 import LoginModal from "../Header/Login/LoginModal";
-import CallApi from "../../api/api";
 import MoviesPage from "../pages/MoviesPage/MoviesPage";
 import MoviePage from "../pages/MoviePage/MoviePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -13,10 +12,14 @@ import {
   toggleModal,
   updateFavorites,
   updateWatchList,
+  fetchUser,
+  fetchFavorites,
+  fetchWatchList,
+  asyncAddRemoveFavorites,
+  asyncAddRemoveWatchList,
 } from "../../redux/auth/auth.actions";
 
 export const AppContext = React.createContext();
-//const cookies = new Cookies();
 
 class App extends Component {
   // state = {
@@ -27,13 +30,13 @@ class App extends Component {
   //   showModal: false,
   // };
 
-  getUser = (session_id) => {
-    return CallApi.get("account", {
-      params: {
-        session_id: session_id,
-      },
-    });
-  };
+  // getUser = (session_id) => {
+  //   return CallApi.get("account", {
+  //     params: {
+  //       session_id: session_id,
+  //     },
+  //   });
+  // };
 
   // updateUser = (user) => {
   //   this.setState({
@@ -64,11 +67,11 @@ class App extends Component {
 
   //// Favorites methods BEGIN ///
   // Getting favorites from server
-  getFavorites = () => {
-    return CallApi.get("account/{account_id}/favorite/movies", {
-      params: { session_id: this.props.session_id },
-    });
-  };
+  // getFavorites = () => {
+  //   return CallApi.get("account/{account_id}/favorite/movies", {
+  //     params: { session_id: this.props.session_id },
+  //   });
+  // };
 
   // Updating favorites
   // updateFavorites = (favorites) => {
@@ -78,37 +81,38 @@ class App extends Component {
   // };
 
   // Adding or removing favorites
-  addRemoveFavorites = (id) => {
-    if (!this.props.session_id) {
-      this.props.toggleModal();
-    } else {
-      const favoriteIds = this.props.favorites.map((favorite) => favorite.id);
-      const isFavorite = favoriteIds.includes(id) ? false : true;
-      CallApi.post("account/{account_id}/favorite", {
-        params: {
-          session_id: this.props.session_id,
-        },
-        body: {
-          media_type: "movie",
-          media_id: id,
-          favorite: isFavorite,
-        },
-      })
-        .then(() => this.getFavorites())
-        .then((data) => this.props.updateFavorites(data.results));
-    }
-  };
+  // addRemoveFavorites = (id) => {
+  //   // if (!this.props.session_id) {
+  //   //   this.props.toggleModal();
+  //   // } else {
+  //   //   const favoriteIds = this.props.favorites.map((favorite) => favorite.id);
+  //   //   const isFavorite = favoriteIds.includes(id) ? false : true;
+  //     // CallApi.post("account/{account_id}/favorite", {
+  //     //   params: {
+  //     //     session_id: this.props.session_id,
+  //     //   },
+  //     //   body: {
+  //     //     media_type: "movie",
+  //     //     media_id: id,
+  //     //     favorite: isFavorite,
+  //     //   },
+  //     // })
+  //     //   .then(() => this.getFavorites())
+  //     //   .then((data) => this.props.updateFavorites(data.results));
+  //     this.props.asyncAddRemoveFavorites(this.props.session_id, id, isFavorite);
+  //   }
+  // };
   //// Favorites methods END ////
 
   //// WatchList methods BEGIN
   // Getting watchList from server
-  getWatchList = () => {
-    return CallApi.get("account/{account_id}/watchlist/movies", {
-      params: {
-        session_id: this.props.session_id,
-      },
-    });
-  };
+  // getWatchList = () => {
+  //   return CallApi.get("account/{account_id}/watchlist/movies", {
+  //     params: {
+  //       session_id: this.props.session_id,
+  //     },
+  //   });
+  // };
 
   // Updating watchList
   // updateWatchList = (watchList) => {
@@ -118,28 +122,33 @@ class App extends Component {
   // };
 
   // Adding or removing watchlist
-  addRemoveWatchList = (id) => {
-    if (!this.props.session_id) {
-      this.props.toggleModal();
-    } else {
-      const watchListIds = this.props.watchList.map(
-        (watchList) => watchList.id
-      );
-      const isWatchListed = watchListIds.includes(id) ? false : true;
-      CallApi.post("account/{account_id}/watchlist", {
-        params: {
-          session_id: this.props.session_id,
-        },
-        body: {
-          media_type: "movie",
-          media_id: id,
-          watchlist: isWatchListed,
-        },
-      })
-        .then(() => this.getWatchList())
-        .then((data) => this.props.updateWatchList(data.results));
-    }
-  };
+  // addRemoveWatchList = (id) => {
+  //   if (!this.props.session_id) {
+  //     this.props.toggleModal();
+  //   } else {
+  //     const watchListIds = this.props.watchList.map(
+  //       (watchList) => watchList.id
+  //     );
+  //     const isWatchListed = watchListIds.includes(id) ? false : true;
+  //     // CallApi.post("account/{account_id}/watchlist", {
+  //     //   params: {
+  //     //     session_id: this.props.session_id,
+  //     //   },
+  //     //   body: {
+  //     //     media_type: "movie",
+  //     //     media_id: id,
+  //     //     watchlist: isWatchListed,
+  //     //   },
+  //     // })
+  //     //   .then(() => this.getWatchList())
+  //     //   .then((data) => this.props.updateWatchList(data.results));
+  //     this.props.asyncAddRemoveWatchList(
+  //       this.props.session_id,
+  //       id,
+  //       isWatchListed
+  //     );
+  //   }
+  // };
   //// WatchList methods END
 
   // toggleModal = () => {
@@ -151,17 +160,10 @@ class App extends Component {
   componentDidMount() {
     const { session_id } = this.props;
     if (session_id) {
-      // this.setState({
-      //   session_id: session_id,
-      // });
       this.props.updateSessionId(session_id);
-      this.getUser(session_id).then((user) => this.props.updateUser(user));
-      this.getFavorites().then((favorites) =>
-        this.props.updateFavorites(favorites.results)
-      );
-      this.getWatchList().then((watchList) =>
-        this.props.updateWatchList(watchList.results)
-      );
+      this.props.fetchUser(session_id);
+      this.props.fetchFavorites(session_id);
+      this.props.fetchWatchList(session_id);
     }
   }
 
@@ -177,10 +179,10 @@ class App extends Component {
             deleteSessionId: this.props.deleteSessionId,
             updateWatchList: this.props.updateWatchList,
             favorites: this.props.favorites,
-            addRemoveFavorites: this.addRemoveFavorites,
+            asyncAddRemoveFavorites: this.props.asyncAddRemoveFavorites,
             updateFavorites: this.props.updateFavorites,
             watchList: this.props.watchList,
-            addRemoveWatchList: this.addRemoveWatchList,
+            asyncAddRemoveWatchList: this.props.asyncAddRemoveWatchList,
             showModal: this.props.showModal,
             toggleModal: this.props.toggleModal,
           }}
@@ -218,6 +220,11 @@ const mapDispatchToProps = {
   updateWatchList,
   deleteSessionId,
   toggleModal,
+  fetchUser,
+  fetchFavorites,
+  fetchWatchList,
+  asyncAddRemoveFavorites,
+  asyncAddRemoveWatchList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,7 +3,7 @@ import { AppContextHOC } from "../../HOC/AppContextHOC";
 
 import { Star, StarBorder } from "@material-ui/icons";
 
-function FavoriteIcon({ id, favorites, addRemoveFavorites }) {
+function FavoriteIcon({ id, favorites, asyncAddRemoveFavorites }) {
   let isFavorite = false;
   if (favorites.length > 0) {
     let favoriteIDs = favorites.map((el) => el.id);
@@ -12,9 +12,9 @@ function FavoriteIcon({ id, favorites, addRemoveFavorites }) {
   return (
     <>
       {isFavorite ? (
-        <Star onClick={() => addRemoveFavorites(id)} />
+        <Star onClick={() => asyncAddRemoveFavorites(id)} />
       ) : (
-        <StarBorder onClick={() => addRemoveFavorites(id)} />
+        <StarBorder onClick={() => asyncAddRemoveFavorites(id)} />
       )}
     </>
   );
