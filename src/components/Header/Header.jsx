@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withAuth } from "../../hoc/withAuth";
 
 import Login from "../Header/Login/Login";
 import UserMenu from "../Header/UserMenu";
-import { AppContextHOC } from "../HOC/AppContextHOC";
 
 class Header extends Component {
   render() {
@@ -18,14 +18,14 @@ class Header extends Component {
           >
             Movie App
           </Link>
-          {this.props.user ? (
+          {this.props.auth.user ? (
             <UserMenu />
           ) : (
-            <Login toggleModal={this.props.toggleModal} />
+            <Login toggleModal={this.props.authActions.toggleModal} />
           )}
         </div>
       </nav>
     );
   }
 }
-export default AppContextHOC(Header);
+export default withAuth(Header);

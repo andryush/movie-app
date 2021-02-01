@@ -1,9 +1,13 @@
 import React from "react";
-import { AppContextHOC } from "../../HOC/AppContextHOC";
 
 import { Star, StarBorder } from "@material-ui/icons";
+import { withAuth } from "../../../hoc/withAuth";
 
-function FavoriteIcon({ id, favorites, asyncAddRemoveFavorites }) {
+function FavoriteIcon({
+  auth: { favorites },
+  authActions: { toggleFavoriteMovies },
+  id,
+}) {
   let isFavorite = false;
   if (favorites.length > 0) {
     let favoriteIDs = favorites.map((el) => el.id);
@@ -12,11 +16,11 @@ function FavoriteIcon({ id, favorites, asyncAddRemoveFavorites }) {
   return (
     <>
       {isFavorite ? (
-        <Star onClick={() => asyncAddRemoveFavorites(id)} />
+        <Star onClick={() => toggleFavoriteMovies(id)} />
       ) : (
-        <StarBorder onClick={() => asyncAddRemoveFavorites(id)} />
+        <StarBorder onClick={() => toggleFavoriteMovies(id)} />
       )}
     </>
   );
 }
-export default AppContextHOC(FavoriteIcon);
+export default withAuth(FavoriteIcon);

@@ -1,5 +1,4 @@
 import React from "react";
-import { AppContextHOC } from "../HOC/AppContextHOC";
 import CallApi from "../../api/api";
 import {
   Dropdown,
@@ -7,6 +6,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
+import { withAuth } from "../../hoc/withAuth";
 
 class UserMenu extends React.Component {
   state = {
@@ -23,7 +23,7 @@ class UserMenu extends React.Component {
     await CallApi.delete("authentication/session", {
       body: { session_id: session_id },
     });
-    this.props.deleteSessionId();
+    this.props.authActions.deleteSessionId();
   };
 
   render() {
@@ -37,14 +37,14 @@ class UserMenu extends React.Component {
           <img
             width="40"
             className="rounded-circle"
-            src={`https://www.themoviedb.org/t/p/w64_and_h64_face${this.props.user.avatar.tmdb.avatar_path}`}
+            src={`https://www.themoviedb.org/t/p/w64_and_h64_face${this.props.auth.user.avatar.tmdb.avatar_path}`}
             alt="Avatar"
           />
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem
             className="text-center"
-            onClick={() => this.onLogout(this.props.session_id)}
+            onClick={() => this.onLogout(this.props.auth.session_id)}
           >
             Выйти
           </DropdownItem>
@@ -53,4 +53,4 @@ class UserMenu extends React.Component {
     );
   }
 }
-export default AppContextHOC(UserMenu);
+export default withAuth(UserMenu);

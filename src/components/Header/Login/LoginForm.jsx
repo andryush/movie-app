@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import CallApi from "../../../api/api";
-
-import { AppContextHOC } from "../../HOC/AppContextHOC";
 import "./LoginForm.css";
 
 import classNames from "classnames";
+import { withAuth } from "../../../hoc/withAuth";
 
 class LoginForm extends Component {
   constructor() {
@@ -82,13 +81,13 @@ class LoginForm extends Component {
           request_token: requestToken.request_token,
         },
       });
-      this.props.updateSessionId(session_id);
+      this.props.authActions.updateSessionId(session_id);
 
       const accountDetails = await CallApi.get("account", {
         params: { session_id: session_id },
       });
-      this.props.updateUser(accountDetails);
-      this.props.toggleModal();
+      this.props.authActions.updateUser(accountDetails);
+      this.props.authActions.toggleModal();
 
       const favorites = await CallApi.get(
         "account/{account_id}/favorite/movies",
@@ -96,7 +95,7 @@ class LoginForm extends Component {
           params: { session_id: session_id },
         }
       );
-      this.props.updateFavorites(favorites.results);
+      this.props.authActions.updateFavorites(favorites.results);
 
       const watchList = await CallApi.get(
         "account/{account_id}/watchlist/movies",
@@ -106,7 +105,7 @@ class LoginForm extends Component {
           },
         }
       );
-      this.props.updateWatchList(watchList.results);
+      this.props.authActions.updateWatchList(watchList.results);
     } catch (error) {
       this.setState({
         submitting: false,
@@ -219,4 +218,4 @@ class LoginForm extends Component {
     );
   }
 }
-export default AppContextHOC(LoginForm);
+export default withAuth(LoginForm);

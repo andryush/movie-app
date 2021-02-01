@@ -1,6 +1,5 @@
-import Cookies from "universal-cookie";
 import * as types from "./auth.types";
-const cookies = new Cookies();
+import { cookies } from "../../utils/cookies";
 
 const initialState = {
   session_id: cookies.get("session_id") || null,
@@ -13,14 +12,12 @@ const initialState = {
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.UPDATE_SESSION_ID:
-      cookies.set("session_id", action.payload, { path: "/", maxAge: 7200 });
-      return { ...state, session_id: cookies.get("session_id") };
+      return { ...state, session_id: action.payload };
 
     case types.UPDATE_USER:
       return { ...state, user: action.payload };
 
     case types.DELETE_SESSION_ID:
-      cookies.remove("session_id");
       return {
         ...state,
         session_id: null,

@@ -74,7 +74,7 @@ export const fetchWatchList = (session_id) => (dispatch) => {
 };
 
 // Async AddRemoveFavorites
-export const asyncAddRemoveFavorites = (id) => (dispatch, getState) => {
+export const toggleFavoriteMovies = (id) => (dispatch, getState) => {
   const {
     auth: { session_id, favorites },
   } = getState();
@@ -98,7 +98,7 @@ export const asyncAddRemoveFavorites = (id) => (dispatch, getState) => {
 };
 
 // Async AddRemoveWatchList
-export const asyncAddRemoveWatchList = (id) => (dispatch, getState) => {
+export const toggleWatchListMovies = (id) => (dispatch, getState) => {
   const {
     auth: { session_id, watchList },
   } = getState();

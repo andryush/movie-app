@@ -1,9 +1,13 @@
 import React from "react";
-import { AppContextHOC } from "../../HOC/AppContextHOC";
 
 import { Bookmark, BookmarkBorder } from "@material-ui/icons";
+import { withAuth } from "../../../hoc/withAuth";
 
-function WatchListIcon({ id, watchList, asyncAddRemoveWatchList }) {
+function WatchListIcon({
+  auth: { watchList },
+  authActions: { toggleWatchListMovies },
+  id,
+}) {
   let isWatchListed = false;
   if (watchList.length > 0) {
     let watchListIDs = watchList.map((el) => el.id);
@@ -12,11 +16,11 @@ function WatchListIcon({ id, watchList, asyncAddRemoveWatchList }) {
   return (
     <>
       {isWatchListed ? (
-        <Bookmark onClick={() => asyncAddRemoveWatchList(id)} />
+        <Bookmark onClick={() => toggleWatchListMovies(id)} />
       ) : (
-        <BookmarkBorder onClick={() => asyncAddRemoveWatchList(id)} />
+        <BookmarkBorder onClick={() => toggleWatchListMovies(id)} />
       )}
     </>
   );
 }
-export default AppContextHOC(WatchListIcon);
+export default withAuth(WatchListIcon);
